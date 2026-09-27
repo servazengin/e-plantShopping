@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './ProductList.css'
+import './ProductList.css';
 import CartItem from './CartItem';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from './CartSlice';
-
 
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
@@ -11,6 +10,13 @@ function ProductList({ onHomeClick }) {
     const [addedToCart, setAddedToCart] = useState({});
 
     const dispatch = useDispatch();
+    const CartItems = useSelector(state => state.cart.items);
+
+    const calculateTotalQuantity = () => {
+        return CartItems
+            ? CartItems.reduce((total, item) => total + item.quantity, 0)
+            : 0;
+    };
 
     const plantsArray = [
         {
@@ -59,13 +65,13 @@ function ProductList({ onHomeClick }) {
             plants: [
                 {
                     name: "Lavender",
-                    image: "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    image: "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWx8fGVufDB8fHx8fA%3D%3D",
                     description: "Calming scent, used in aromatherapy.",
                     cost: "$20"
                 },
                 {
                     name: "Jasmine",
-                    image: "https://images.unsplash.com/photo-1592729645009-b96d1e63d14b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    image: "https://images.unsplash.com/photo-1592729645009-b96d1e63d14b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWx8fGVufDB8fHx8fA%3D%3D",
                     description: "Sweet fragrance, promotes relaxation.",
                     cost: "$18"
                 },
@@ -124,7 +130,7 @@ function ProductList({ onHomeClick }) {
                 },
                 {
                     name: "Lavender",
-                    image: "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    image: "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWx8fGVufDB8fHx8fA%3D%3D",
                     description: "Calming scent, used in aromatherapy.",
                     cost: "$20"
                 },
@@ -182,7 +188,7 @@ function ProductList({ onHomeClick }) {
             plants: [
                 {
                     name: "ZZ Plant",
-                    image: "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    image: "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWx8fGVufDB8fHx8fA%3D%3D",
                     description: "Thrives in low light and requires minimal watering.",
                     cost: "$25"
                 },
@@ -228,20 +234,20 @@ function ProductList({ onHomeClick }) {
         justifyContent: 'space-between',
         alignIems: 'center',
         fontSize: '20px',
-    }
+    };
 
     const styleObjUl = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '1100px',
-    }
+    };
 
     const styleA = {
         color: 'white',
         fontSize: '30px',
         textDecoration: 'none',
-    }
+    };
 
     const handleHomeClick = (e) => {
         e.preventDefault();
@@ -347,6 +353,10 @@ function ProductList({ onHomeClick }) {
                                         id="mainIconPathAttribute"
                                     ></path>
                                 </svg>
+
+                                <span style={{ fontSize: '20px' }}>
+                                    {calculateTotalQuantity()}
+                                </span>
                             </h1>
                         </a>
                     </div>
